@@ -22,11 +22,9 @@ const list = [
   },
 ];
 
-function getTitle(title){
-  return title
-}
+const getTitle = (title) => title
 
-function List(){
+const List = () => {
   return (
     <div>
       {list.map(
@@ -44,17 +42,16 @@ function List(){
   )
 }
 
-function App() {
-
+const App = () => {
   const title = "React"
-
+  
   return (
     <div>
       <h1>Hello {getTitle(title)}</h1>
 
       <label htmlFor="search">Search: </label>
       <input id="search" type="text" />
-
+      
       <hr/>
 
       <List/>

@@ -22,8 +22,6 @@ const list = [
   },
 ];
 
-const getTitle = (title) => title
-
 const List = () => {
   return (
     <div>
@@ -43,15 +41,15 @@ const List = () => {
 }
 
 const App = () => {
-  const title = "React"
+  const handleChange = (event) => console.log(event.target.value)
   
   return (
     <div>
-      <h1>Hello {getTitle(title)}</h1>
+      <h1>My Hacker Stories</h1>
 
       <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
-      
+      <input id="search" type="text" onChange={handleChange}/>
+
       <hr/>
 
       <List/>

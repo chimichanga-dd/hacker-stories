@@ -4,6 +4,7 @@ import './App.css';
 
 
 const List = (props) => {
+
   return (
     <div>
       {props.list.map(
@@ -21,11 +22,12 @@ const List = (props) => {
   )
 }
 
-const Search = () => {
+const Search = (props) => {
   const [searchTerm, setSearchTerm] = React.useState('');
 
-  const handleChange = (event) => {
-    setSearchTerm(event.target.value)
+  const handleChange = (e) => {
+    setSearchTerm(e.target.value)
+    props.onSearch(e)
   }
   
   return(
@@ -40,6 +42,8 @@ const Search = () => {
 }
 
 const App = () => {
+
+  const [searchTerm, setSearchTerm] = React.useState('')
 
   const stories = [
     {
@@ -60,16 +64,20 @@ const App = () => {
     },
   ];
 
+  const searchedStories = stories.filter( 
+      (story) => story.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value)
+  }
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
-
-      <Search />
+      <Search onSearch={handleSearch}/>
       <hr/>
-
-      <List list={stories}/>
-      
-
+      <List list={searchedStories}/>
     </div>
   );
 }

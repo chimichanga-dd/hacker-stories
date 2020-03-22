@@ -3,6 +3,19 @@ import logo from './logo.svg';
 import './App.css';
 
 
+const useSemiPersistentState = (key, initialState = "") => {
+  const [value, setValue] = React.useState(
+    localStorage.getItem(key) || initialState
+  )
+
+  React.useEffect(() => {
+    localStorage.setItem(key, value)
+  }, [value, key])
+
+  return [value, setValue]
+}
+
+
 const List = (props) => {
 
   const Item = ({item}) => (
@@ -44,14 +57,6 @@ const Search = (props) => {
 
 const App = () => {
 
-  const [searchTerm, setSearchTerm] = React.useState(
-    localStorage.getItem('search') || "React"
-  )
-
-  React.useEffect( () => {
-    localStorage.setItem('search',searchTerm)
-  }, [searchTerm])
-
   const stories = [
     {
       title: 'React',
@@ -70,6 +75,8 @@ const App = () => {
       objectID: 1,
     },
   ];
+
+  const [searchTerm, setSearchTerm] = useSemiPersistentState("search")
 
   const searchedStories = stories.filter( 
       (story) => story.title.toLowerCase().includes(searchTerm.toLowerCase())

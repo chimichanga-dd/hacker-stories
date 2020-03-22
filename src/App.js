@@ -16,9 +16,9 @@ const useSemiPersistentState = (key, initialState = "") => {
 }
 
 
-const List = (props) => {
+const List = ({ list, onRemoveItem}) => {
 
-  const Item = ({item}) => (
+  const Item = ({ item, onRemoveItem}) => (
     <div>
       <span>
         <a href={item.url}>{item.title}</a>
@@ -26,13 +26,23 @@ const List = (props) => {
       <span>{item.author}</span>
       <span>{item.num_comments}</span>
       <span>{item.points}</span>
+      <button
+        onClick={() => onRemoveItem(item)}
+      > Remove
+      </button>
     </div>
   )
 
   return (
     <div>
-      {props.list.map(
-        (item) => <Item key={item.objectID} item={item}/>
+      {list.map(
+        (item) => (
+          <Item 
+            key={item.objectID}
+            item={item}
+            onRemoveItem={onRemoveItem} 
+          />
+        )
       )}
     </div>
   )
@@ -54,7 +64,7 @@ const Search = ({search, onSearch}) => {
 
 const App = () => {
 
-  const stories = [
+  const initialStories = [
     {
       title: 'React',
       url: 'https://reactjs.org/',
@@ -74,6 +84,7 @@ const App = () => {
   ];
 
   const [searchTerm, setSearchTerm] = useSemiPersistentState("search")
+  const [stories, setStories] = React.useState(initialStories)
 
   const searchedStories = stories.filter( 
       (story) => story.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -83,12 +94,19 @@ const App = () => {
     setSearchTerm(e.target.value)
   }
 
+  const handleRemoveStory = (item) => {
+    console.log(item)
+    const newStories = stories.filter((story) => story.objectID != item.objectID)
+    console.log(newStories)
+    setStories(newStories)
+  }
+
   return (
     <div>
       <h1>My Hacker Stories</h1>
       <Search onSearch={handleSearch} search={searchTerm}/>
       <hr/>
-      <List list={searchedStories}/>
+      <List list={searchedStories} onRemoveItem={handleRemoveStory}/>
     </div>
   );
 }

@@ -44,7 +44,13 @@ const Search = (props) => {
 
 const App = () => {
 
-  const [searchTerm, setSearchTerm] = React.useState('React')
+  const [searchTerm, setSearchTerm] = React.useState(
+    localStorage.getItem('search') || "React"
+  )
+
+  React.useEffect( () => {
+    localStorage.setItem('search',searchTerm)
+  }, [searchTerm])
 
   const stories = [
     {
@@ -68,7 +74,7 @@ const App = () => {
   const searchedStories = stories.filter( 
       (story) => story.title.toLowerCase().includes(searchTerm.toLowerCase())
     )
-
+  
   const handleSearch = (e) => {
     setSearchTerm(e.target.value)
   }
